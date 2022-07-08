@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RestController
+@RequestMapping("/blogs")
 public class BlogController {
     private final BlogRepo blogRepo;
     private final BlogDTOFactory blogDTOFactory;
@@ -61,7 +62,7 @@ public class BlogController {
      * @param title
      * @return collection model of blog DTOs
      */
-    @GetMapping("/blogs/{title}")
+    @GetMapping("/{title}")
     public ResponseEntity<CollectionModel<EntityModel<BlogDTO>>> blogInfo(@PathVariable String title){
         return ResponseEntity.ok(
                 blogDTOFactory.toCollectionModel(
@@ -75,7 +76,7 @@ public class BlogController {
      *
      * @return get info about all blogs in the repository.
      */
-    @GetMapping("/blogs/info")
+    @GetMapping("/info")
     public ResponseEntity<CollectionModel<EntityModel<BlogDTO>>> allBlogsInfo(){
         return ResponseEntity.ok(
                 blogDTOFactory.toCollectionModel(
@@ -92,7 +93,7 @@ public class BlogController {
      * @return if userName exist return list of all it's blog's
      * else return notFound status.
      */
-    @GetMapping("/blogs/{userName}")
+    @GetMapping("/{userName}")
     public ResponseEntity<?> getBlogsByUser(@PathVariable String userName){
         Optional<User> userOptional = userController.getUserByUserName(userName);
         if(userOptional.isPresent()){
@@ -137,7 +138,7 @@ public class BlogController {
         }
     }
 
-    @PutMapping("/blogs")
+    @PutMapping
     public ResponseEntity<?>
     renameBlog(@RequestParam String userName, @RequestParam String oldName, @RequestParam String newName){
 
@@ -163,7 +164,7 @@ public class BlogController {
         return ResponseEntity.ok(blogDTOFactory.toModel(new BlogDTO(blog)));
     }
 
-    @DeleteMapping("/blog")
+    @DeleteMapping
     public ResponseEntity<?> deleteBlogFromUser(@RequestParam String userName,@RequestParam String blogTitle){
         Optional<User> userOptional = userController.getUserByUserName(userName);
         if(userOptional.isEmpty()){
