@@ -1,13 +1,13 @@
 package restapi.webapp.exceptions.handlers;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import restapi.webapp.exceptions.blog.BlogAlreadyExistsException;
 import restapi.webapp.exceptions.blog.BlogNotFoundException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class BlogExceptionAdvice {
 
     @ExceptionHandler(BlogNotFoundException.class)

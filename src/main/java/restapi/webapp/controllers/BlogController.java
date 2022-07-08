@@ -5,6 +5,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import restapi.webapp.dto.BlogDTO;
+import restapi.webapp.exceptions.user.UserNotFoundException;
 import restapi.webapp.pojos.Blog;
 import restapi.webapp.pojos.User;
 import restapi.webapp.repos.BlogRepo;
@@ -143,11 +144,10 @@ public class BlogController {
      * @return added BlogDto
      */
     @PostMapping("/addBlog")
-    public ResponseEntity<?> addBlogToUser(@RequestParam() String userName, @RequestParam String blogTitle){
+    public ResponseEntity<?> addBlogToUser(@RequestParam String userName, @RequestParam String blogTitle) throws UserNotFoundException {
         Optional<User> userOptional = userController.getUserByUserName(userName);
 
-        //TODO: change exception type
-        User user = userOptional.orElseThrow(IllegalArgumentException::new);
+        User user = userOptional.orElseThrow(() -> new UserNotFoundException(userName));
 
         //if user don't have blog with this title
         if(!user.getStringBlogMap().containsKey(blogTitle))

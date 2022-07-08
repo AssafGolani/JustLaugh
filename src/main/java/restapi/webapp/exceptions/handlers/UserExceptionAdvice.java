@@ -1,14 +1,13 @@
 package restapi.webapp.exceptions.handlers;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import restapi.webapp.exceptions.joke.JokeNotFoundException;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import restapi.webapp.exceptions.user.UserAlreadyExistsException;
 import restapi.webapp.exceptions.user.UserNotFoundException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class UserExceptionAdvice {
     @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

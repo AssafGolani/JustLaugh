@@ -4,6 +4,6 @@ import javassist.NotFoundException;
 
 public class UserNotFoundException extends NotFoundException {
     public UserNotFoundException(String msg) {
-        super("[USER]: " + msg);
+        super("[USER]: " + msg + "Not found.");
     }
 }
