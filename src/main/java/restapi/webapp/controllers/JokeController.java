@@ -48,6 +48,11 @@ public class JokeController {
         return jokeRepo.save(joke);
     }
 
+    /**
+     *
+     * @param id of joke
+     * @return jokeDTO
+     */
     @GetMapping("/{id}")
     public ResponseEntity<?> getJokeById(@PathVariable Long id) {
         Optional<Joke> jokeOptional = jokeRepo.findById(id);
@@ -57,6 +62,10 @@ public class JokeController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     *
+     * @return collection model of all jokeDTOs
+     */
     @GetMapping("/all")
     public ResponseEntity<?> allJokesInfo() {
         return ResponseEntity.ok(jokeDTOFactory.toCollectionModel(
@@ -66,7 +75,12 @@ public class JokeController {
                         .collect(Collectors.toList())));
     }
 
-    //TODO: Add service to get new joke and parse it
+    /**
+     *
+     * @return ApiJokeDTO model
+     * @throws ExecutionException depends on outside service
+     * @throws InterruptedException depends on outside service
+     */
     @GetMapping("/jokeFromAPI")
     public ResponseEntity<ApiJokesDTO> getNewJoke() throws ExecutionException, InterruptedException {
         CompletableFuture<ApiJokesDTO> jokeOptional = this.jokesService.joke();
@@ -76,7 +90,7 @@ public class JokeController {
     /**
      * get Joke By username if exists
      *
-     * @param userName
+     * @param userName username
      * @return get all the jokes claimed by specific user.
      */
     @GetMapping("")
@@ -98,6 +112,12 @@ public class JokeController {
                 jokeDTOFactory.toCollectionModel(jokes));
     }
 
+    /**
+     *
+     * @param apiJoke joke as received from getJoke
+     * @param blogId blog if whom you want to add the joke to.
+     * @return blogDTO after adding the joke to blog
+     */
     @PostMapping("/{blogId}")
     public ResponseEntity<?> saveJokeToRepo(@RequestBody ApiJokesDTO apiJoke, @PathVariable Long blogId) {
         Joke joke = jokesService.parsedJoke(apiJoke);
@@ -131,6 +151,13 @@ public class JokeController {
         }
     }
 
+
+    /**
+     *
+     * @param blogId blog which we would like to remove the joke from
+     * @param jokeId joke id whom you want to remove
+     * @return BlogDTO after the removal.
+     */
     @DeleteMapping("/delete/{blogId}/{jokeId}")
     public ResponseEntity<?> deleteJoke(@PathVariable Long blogId, @PathVariable Long jokeId) {
         Optional<Joke> optionalJoke = jokeRepo.findById(jokeId);
@@ -162,10 +189,6 @@ public class JokeController {
 
             return ResponseEntity.ok().body(blogController.getBlogModel(blog));
         }
-
     }
-
-
-
 
 }

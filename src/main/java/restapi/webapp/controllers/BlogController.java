@@ -31,14 +31,29 @@ public class BlogController {
         this.jokeController = jokeController;
     }
 
+    /**
+     *
+     * @param blog to save
+     * @return blog saved
+     */
     public Blog saveBlogToRepo(Blog blog){
         return blogRepo.save(blog);
     }
 
+    /**
+     *
+     * @param id of blog to return
+     * @return blog if exists. null otherwise.
+     */
     public Optional<Blog> getBlog(Long id){
         return blogRepo.findById(id);
     }
 
+    /**
+     *
+     * @param blog to model
+     * @return entityModel of the desired BlogDto
+     */
     public EntityModel<BlogDTO> getBlogModel(Blog blog) {
         return blogDTOFactory.toModel(new BlogDTO(blog));
     }
@@ -108,6 +123,11 @@ public class BlogController {
         }
     }
 
+    /**
+     *
+     * @param id of the wanted blog
+     * @return blogDto if exists otherwise notFound Response
+     */
     @GetMapping("/getBlog")
     public ResponseEntity<?> getBlogById(@RequestParam Long id){
         return blogRepo.findById(id).map(BlogDTO::new)
@@ -116,6 +136,12 @@ public class BlogController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     *
+     * @param userName who "owns" the blog
+     * @param blogTitle of the added blog
+     * @return added BlogDto
+     */
     @PostMapping("/addBlog")
     public ResponseEntity<?> addBlogToUser(@RequestParam() String userName, @RequestParam String blogTitle){
         Optional<User> userOptional = userController.getUserByUserName(userName);
@@ -133,7 +159,6 @@ public class BlogController {
             return ResponseEntity.created(URI.create("http://localhost:8080/getBlog?id="+blog.getId()))
                     .body(blogDTOFactory.toModel(new BlogDTO(blog)));
         }else{
-            //TODO: change bad request body.
             return ResponseEntity.badRequest().body("Error: User contains blog with the same Name.");
         }
     }
@@ -184,7 +209,5 @@ public class BlogController {
 
         return ResponseEntity.ok().body(userController.getUserModel(user));
     }
-
-
 
 }
