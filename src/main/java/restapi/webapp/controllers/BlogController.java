@@ -38,6 +38,10 @@ public class BlogController {
         return blogRepo.findById(id);
     }
 
+    public EntityModel<BlogDTO> getBlogModel(Blog blog) {
+        return blogDTOFactory.toModel(new BlogDTO(blog));
+    }
+
     /**
      * for use when getting Collection of blogs contains certain joke.
      * @param blogs
@@ -179,7 +183,6 @@ public class BlogController {
 
         return ResponseEntity.ok().body(userController.getUserModel(user));
     }
-
 
 
 
