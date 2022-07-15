@@ -6,6 +6,9 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import restapi.webapp.dto.UserDTO;
+import restapi.webapp.exceptions.blog.BlogNotFoundException;
+import restapi.webapp.exceptions.user.UserAlreadyExistsException;
+import restapi.webapp.exceptions.user.UserNotFoundException;
 import restapi.webapp.pojos.Blog;
 import restapi.webapp.pojos.User;
 import restapi.webapp.repos.UserRepo;
@@ -68,7 +71,7 @@ public class UserController {
         return ResponseEntity.ok(
                 userDTOFactory.toCollectionModel(
                         StreamSupport.stream(userRepo.findAll().spliterator(),
-                                false)
+                                        false)
                                 .map(UserDTO::new)
                                 .collect(Collectors.toList())));
     }
@@ -83,10 +86,8 @@ public class UserController {
      */
     @PostMapping("/{newUserName}")
     public ResponseEntity<?> addNewUser(@PathVariable String newUserName){
-        Optional<User> user = userRepo.findByName(newUserName);
-        if(user.isPresent()){
-            //TODO: throw and catch exception saying "userName already exist".
-            return ResponseEntity.badRequest().body(userDTOFactory.toModel(user.map(UserDTO::new).get()));
+        if(userRepo.findByName(newUserName).isPresent()){
+            throw new UserAlreadyExistsException("Error: User is already exist");
         }
 
         User userToAdd = new User(newUserName);
@@ -103,28 +104,19 @@ public class UserController {
      * @return user model entity
      */
     @PutMapping
-    public ResponseEntity<?> changeUserName(@RequestParam String oldUserName, @RequestParam String newUserName){
+    public ResponseEntity<?> changeUserName(@RequestParam String oldUserName, @RequestParam String newUserName) throws UserNotFoundException {
         Optional<User> userOptional = userRepo.findByName(oldUserName);
 
-        // is oldUserName exists
-        if(userOptional.isEmpty()){
-            ResponseEntity.badRequest().body("Error: User name does not exist");
-        }
-
-        // is newUserName available
         if(userRepo.findByName(newUserName).isPresent()){
-            ResponseEntity.badRequest().body("Error: new User name already exist. Choose another name");
+            throw new UserAlreadyExistsException("Error: new User name already exist. Choose another name");
+//            ResponseEntity.badRequest().body("Error: new User name already exist. Choose another name");
         }
 
-        if(userOptional.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        User user = userOptional.get();
+        User user = userOptional.orElseThrow(() ->  new UserNotFoundException("Error: User name does not exist"));
         user.setName(newUserName);
         userRepo.save(user);
 
         return ResponseEntity.ok().body(userDTOFactory.toModel(new UserDTO(user)));
-
     }
 
     /**
@@ -133,19 +125,10 @@ public class UserController {
      * @return userDTO
      */
     @DeleteMapping
-    public ResponseEntity<?> deleteUserByUserName(@RequestParam String userName){
+    public ResponseEntity<?> deleteUserByUserName(@RequestParam String userName) throws UserNotFoundException, BlogNotFoundException {
         Optional<User> userOptional = userRepo.findByName(userName);
 
-        // is userName exists
-        if(userOptional.isEmpty()){
-            ResponseEntity.badRequest().body("Error: User name does not exist");
-        }
-
-        if(userOptional.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-
-        User user = userOptional.get();
+        User user = userOptional.orElseThrow(() -> new UserNotFoundException("Error: User name does not exist"));
         user.getStringBlogMap().clear();
         Collection<Blog> userBlogs = user.getStringBlogMap().values();
         for (Blog blog : userBlogs) {
