@@ -78,9 +78,8 @@ public class BlogController {
      * get collection model of the info about blogs whose title is the same as the param.
      * @param title
      * @return collection model of blog DTOs
-     * TODO: doesn't work need to check
      */
-    @GetMapping("/{title}")
+    @GetMapping("/title/{title}")
     public ResponseEntity<CollectionModel<EntityModel<BlogDTO>>> blogInfo(@PathVariable String title){
         return ResponseEntity.ok(
                 blogDTOFactory.toCollectionModel(
@@ -94,7 +93,7 @@ public class BlogController {
      *
      * @return get info about all blogs in the repository.
      */
-    @GetMapping("/info")
+    @GetMapping("")
     public ResponseEntity<CollectionModel<EntityModel<BlogDTO>>> allBlogsInfo(){
         return ResponseEntity.ok(
                 blogDTOFactory.toCollectionModel(
@@ -110,9 +109,8 @@ public class BlogController {
      * @param userName
      * @return if userName exist return list of all it's blog's
      * else return notFound status.
-     * TODO: doesn't work need to check
      */
-    @GetMapping("/{userName}")
+    @GetMapping("/user/{userName}")
     public ResponseEntity<?> getBlogsByUser(@PathVariable String userName) throws UserNotFoundException {
         Optional<User> userOptional = userController.getUserByUserName(userName);
         if(userOptional.isPresent()){
@@ -168,6 +166,14 @@ public class BlogController {
         }
     }
 
+    /**
+     * @param userName who "owns" the blog
+     * @param oldName of the blog to rename
+     * @param newName of the blog to rename
+     * @return
+     * @throws UserNotFoundException
+     * @throws BlogNotFoundException
+     */
     @PutMapping
     public ResponseEntity<?>
     renameBlog(@RequestParam String userName, @RequestParam String oldName, @RequestParam String newName) throws UserNotFoundException, BlogNotFoundException {
@@ -196,6 +202,13 @@ public class BlogController {
         return ResponseEntity.ok(blogDTOFactory.toModel(new BlogDTO(blog)));
     }
 
+    /**
+     * @param userName who "owns" the blog
+     * @param blogTitle of the blog to delete
+     * @return ResponseEntity.ok() if blog was deleted otherwise ResponseEntity.badRequest()
+     * @throws UserNotFoundException
+     * @throws BlogNotFoundException
+     */
     @DeleteMapping
     public ResponseEntity<?> deleteBlogFromUser(@RequestParam String userName,@RequestParam String blogTitle) throws UserNotFoundException, BlogNotFoundException {
         Optional<User> userOptional = userController.getUserByUserName(userName);

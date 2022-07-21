@@ -9,6 +9,4 @@ public class ApiJokesDTO {
     private final Long id;
     private final Category category;
     private final String joke;
-    private boolean isNsfw;
-
 }

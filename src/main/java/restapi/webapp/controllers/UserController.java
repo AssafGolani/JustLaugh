@@ -1,10 +1,12 @@
 package restapi.webapp.controllers;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import restapi.webapp.adapters.UserDetailsAdapter;
 import restapi.webapp.dto.UserDTO;
 import restapi.webapp.exceptions.blog.BlogNotFoundException;
 import restapi.webapp.exceptions.user.UserAlreadyExistsException;
@@ -15,7 +17,9 @@ import restapi.webapp.repos.UserRepo;
 import restapi.webapp.representationmodels.UserDTOFactory;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -46,13 +50,43 @@ public class UserController {
     }
 
     /**
-     *
+     * @param email of user to return
+     * @return userDto if exists.
+     */
+    @GetMapping("/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
+        return userRepo.findByEmail(email)
+                .map(UserDTO::new)
+                .map(userDTOFactory::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * @param start date of user to return
+     * @param end date of user to return
+     * @return list of userDTOs
+     */
+    @GetMapping("/betweenDates")
+    public ResponseEntity<?> getUsersBetweenDates(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
+        Optional<List<User>> userOptional = userRepo.findAllByCreationDateIsBetween(start, end);
+        if (userOptional.isPresent()) {
+            List<User> users = userOptional.get();
+            return ResponseEntity.ok(
+                    userDTOFactory.toCollectionModel(
+                    users.stream()
+                            .map(UserDTO::new)
+                            .collect(Collectors.toList())));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    /**
      * @param id - user Id
      * @return info about specific existing user including all owned blogs title's,
      * if user not found, return status 404 not found.
      */
-    //TODO: change to search by userName?.
-    //TODO: add link to blogs (?).
     @GetMapping("/{id}/info")
     public ResponseEntity<?> userInfo(@PathVariable Long id){
         return userRepo.findById(id)
@@ -79,26 +113,24 @@ public class UserController {
 
     /**
      * add a new user if given userName doesn't exist.
-     * @param newUserName username
+     * @param newUserAdapter object of username and email
      * @return if newUserName is available (not in use) add a new userName with that name.
-     * // TODO: change else's description if changed to and exception or such.
      * else return status of "bad request" and the data about the user with the given name.
      */
-    @PostMapping("/{newUserName}")
-    public ResponseEntity<?> addNewUser(@PathVariable String newUserName){
-        if(userRepo.findByName(newUserName).isPresent()){
+    @PostMapping
+    public ResponseEntity<?> addNewUser(@RequestBody UserDetailsAdapter newUserAdapter){
+        if(userRepo.findByName(newUserAdapter.getName()).isPresent() || userRepo.findByEmail(newUserAdapter.getEmail()).isPresent()){
             throw new UserAlreadyExistsException("Error: User is already exist");
         }
 
-        User userToAdd = new User(newUserName);
+        User userToAdd = new User(newUserAdapter.getName(), newUserAdapter.getEmail());
 
         userRepo.save(userToAdd);
-        return ResponseEntity.created(URI.create("http://localhost:8080/"+newUserName))
+        return ResponseEntity.created(URI.create("http://localhost:8080/"+newUserAdapter.getName()))
                 .body(userDTOFactory.toModel(new UserDTO(userToAdd)));
     }
 
     /**
-     *
      * @param oldUserName username to replace
      * @param newUserName new username
      * @return user model entity
@@ -109,7 +141,6 @@ public class UserController {
 
         if(userRepo.findByName(newUserName).isPresent()){
             throw new UserAlreadyExistsException("Error: new User name already exist. Choose another name");
-//            ResponseEntity.badRequest().body("Error: new User name already exist. Choose another name");
         }
 
         User user = userOptional.orElseThrow(() ->  new UserNotFoundException("Error: User name does not exist"));

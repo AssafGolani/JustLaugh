@@ -12,6 +12,7 @@ import restapi.webapp.exceptions.blog.BlogNotFoundException;
 import restapi.webapp.exceptions.joke.JokeNotFoundException;
 import restapi.webapp.exceptions.user.UserNotFoundException;
 import restapi.webapp.pojos.Blog;
+import restapi.webapp.pojos.Category;
 import restapi.webapp.pojos.Joke;
 import restapi.webapp.pojos.User;
 import restapi.webapp.repos.JokeRepo;
@@ -112,6 +113,21 @@ public class JokeController {
 
         return ResponseEntity.ok(
                 jokeDTOFactory.toCollectionModel(jokes));
+    }
+
+    /**
+     * get Joke by category
+     * @param category
+     * @return get all the jokes in specific category.
+     */
+    @GetMapping("/category")
+    public ResponseEntity<?> getJokesByCategory(@RequestParam Category category) {
+        Optional<List<Joke>> optionalJokes = jokeRepo.findByCategory(category);
+        if (optionalJokes.isPresent()) {
+            List<Joke> jokes = optionalJokes.get();
+            return ResponseEntity.ok(jokeDTOFactory.toCollectionModel(jokes.stream().map(JokeDTO::new).collect(Collectors.toList())));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     /**

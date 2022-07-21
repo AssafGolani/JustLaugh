@@ -13,6 +13,7 @@ import restapi.webapp.repos.BlogRepo;
 import restapi.webapp.repos.JokeRepo;
 import restapi.webapp.repos.UserRepo;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 @Configuration
@@ -22,11 +23,12 @@ public class SeedDB {
     @Bean
     CommandLineRunner seedDatabase(UserRepo userRepo, BlogRepo blogRepo, JokeRepo jokeRepo) {
         return args -> {
-            User user = userRepo.save(new User("User1"));
-            User user2 = userRepo.save(new User("User2"));
-
+            User user = userRepo.save(new User("User1", "123@gmail.com"));
+            User user2 = userRepo.save(new User("User2", "@@@@"));
+            user.setCreationDate(LocalDate.of(2020, 1, 1));
+            userRepo.save(user);
             Blog blog = blogRepo.save(new Blog(user, "Blog1"));
-            Blog blog2 = blogRepo.save(new Blog(user2, "Blog1"));
+            Blog blog2 = blogRepo.save(new Blog(user2, "Blog2"));
 
             logger.info("logging: " + user.getStringBlogMap().keySet());
 

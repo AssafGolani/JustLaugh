@@ -22,14 +22,13 @@ public class JokesService {
     @Async
     public CompletableFuture<ApiJokesDTO> joke(){
         String urlTemplate = String.format("https://v2.jokeapi.dev/joke/Any?type=single");
-//        String urlTemplate = String.format("https://v2.jokeapi.dev/joke/Any?type=single&idRange=289");
         ApiJokesDTO aJoke = this.template.getForObject(urlTemplate,ApiJokesDTO.class);
         return CompletableFuture.completedFuture(aJoke);
 
     }
 
     public Joke parsedJoke(ApiJokesDTO apiJoke){
-        Joke joke = new Joke(apiJoke.getJoke(), apiJoke.getCategory(), apiJoke.isNsfw());
+        Joke joke = new Joke(apiJoke.getJoke(), apiJoke.getCategory());
         return joke;
     }
 

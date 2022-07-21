@@ -9,4 +9,6 @@ import java.util.List;
 public interface BlogRepo extends CrudRepository<Blog, Long> {
     List<Blog> findByTitle(String title);
     List<Blog> findByCreator(User creator);
+
+
 }

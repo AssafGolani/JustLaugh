@@ -19,15 +19,13 @@ public class Joke {
     private Long id;
     private Category category;
     private String joke;
-    private boolean isNSFW; // Not Suitable For Work
 
     @ManyToMany
     private Collection<Blog> blogCollection = new ArrayList<>(); // blogs which contains curtain joke
 
-    public Joke(String joke, Category category, boolean isNSFW) {
+    public Joke(String joke, Category category) {
 //        this.author = author;
         this.category = category;
-        this.isNSFW = isNSFW;
         this.joke = joke;
     }
 }
