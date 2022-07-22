@@ -126,7 +126,7 @@ public class UserController {
         User userToAdd = new User(newUserAdapter.getName(), newUserAdapter.getEmail());
 
         userRepo.save(userToAdd);
-        return ResponseEntity.created(URI.create("http://localhost:8080/"+newUserAdapter.getName()))
+        return ResponseEntity.created(URI.create("http://localhost:8080/users/"+userToAdd.getId() +"/info"))
                 .body(userDTOFactory.toModel(new UserDTO(userToAdd)));
     }
 
