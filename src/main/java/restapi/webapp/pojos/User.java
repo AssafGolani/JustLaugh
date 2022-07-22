@@ -14,8 +14,9 @@ import java.util.Map;
 public class User {
     @GeneratedValue @Id
     private Long id;
+    @Column(unique = true)
     private String name;
-
+    @Column(unique = true)
     private String email;
 
     private LocalDate creationDate = LocalDate.now();
