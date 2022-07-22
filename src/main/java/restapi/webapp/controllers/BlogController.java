@@ -24,13 +24,11 @@ public class BlogController {
     private final BlogRepo blogRepo;
     private final BlogDTOFactory blogDTOFactory;
     private final UserController userController;
-    private final JokeController jokeController;
 
     public BlogController(BlogRepo blogRepo, BlogDTOFactory blogDTOFactory, UserController userController, JokeController jokeController) {
         this.blogRepo = blogRepo;
         this.blogDTOFactory = blogDTOFactory;
         this.userController = userController;
-        this.jokeController = jokeController;
     }
 
     /**
