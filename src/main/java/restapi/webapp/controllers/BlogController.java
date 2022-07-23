@@ -5,6 +5,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import restapi.webapp.dto.BlogDTO;
+import restapi.webapp.exceptions.blog.BlogAlreadyExistsException;
 import restapi.webapp.exceptions.blog.BlogNotFoundException;
 import restapi.webapp.exceptions.user.UserNotFoundException;
 import restapi.webapp.pojos.Blog;
@@ -32,7 +33,6 @@ public class BlogController {
     }
 
     /**
-     *
      * @param blog to save
      * @return blog saved
      */
@@ -41,7 +41,6 @@ public class BlogController {
     }
 
     /**
-     *
      * @param id of blog to return
      * @return blog if exists. null otherwise.
      */
@@ -88,7 +87,6 @@ public class BlogController {
     }
 
     /**
-     *
      * @return get info about all blogs in the repository.
      */
     @GetMapping("")
@@ -103,7 +101,6 @@ public class BlogController {
     }
 
     /**
-     *
      * @param userName
      * @return if userName exist return list of all it's blog's
      * else return notFound status.
@@ -120,17 +117,15 @@ public class BlogController {
         }
         else {
             throw new UserNotFoundException("Error: User was not found");
-//            return ResponseEntity.notFound().build();
         }
     }
 
     /**
-     *
      * @param id of the wanted blog
      * @return blogDto if exists otherwise notFound Response
      */
-    @GetMapping("/getBlog")
-    public ResponseEntity<?> getBlogById(@RequestParam Long id) throws BlogNotFoundException {
+    @GetMapping("/getBlog/{id}")
+    public ResponseEntity<?> getBlogById(@PathVariable Long id) throws BlogNotFoundException {
         return blogRepo.findById(id).map(BlogDTO::new)
                 .map(blogDTOFactory::toModel)
                 .map(ResponseEntity::ok)
@@ -138,13 +133,12 @@ public class BlogController {
     }
 
     /**
-     *
      * @param userName who "owns" the blog
      * @param blogTitle of the added blog
      * @return added BlogDto
      */
     @PostMapping("/addBlog")
-    public ResponseEntity<?> addBlogToUser(@RequestParam String userName, @RequestParam String blogTitle) throws UserNotFoundException, BlogNotFoundException {
+    public ResponseEntity<?> addBlogToUser(@RequestParam String userName, @RequestParam String blogTitle) throws UserNotFoundException, BlogAlreadyExistsException {
         Optional<User> userOptional = userController.getUserByUserName(userName);
 
         User user = userOptional.orElseThrow(() -> new UserNotFoundException(userName));
@@ -156,11 +150,10 @@ public class BlogController {
             user.getStringBlogMap().put(blogTitle, blog);
             userController.saveUserToRepo(user);
             blogRepo.save(blog);
-            return ResponseEntity.created(URI.create("http://localhost:8080/getBlog?id="+blog.getId()))
+            return ResponseEntity.created(URI.create("http://localhost:8080/blogs/getBlog/"+blog.getId()))
                     .body(blogDTOFactory.toModel(new BlogDTO(blog)));
         }else{
-            throw new BlogNotFoundException("Error: User contains blog with the same name");
-//            return ResponseEntity.badRequest().body("Error: User contains blog with the same name.");
+            throw new BlogAlreadyExistsException("Error: User contains blog with the same name");
         }
     }
 
@@ -168,7 +161,7 @@ public class BlogController {
      * @param userName who "owns" the blog
      * @param oldName of the blog to rename
      * @param newName of the blog to rename
-     * @return
+     * @return renamed BlogDto
      * @throws UserNotFoundException
      * @throws BlogNotFoundException
      */
@@ -177,15 +170,12 @@ public class BlogController {
     renameBlog(@RequestParam String userName, @RequestParam String oldName, @RequestParam String newName) throws UserNotFoundException, BlogNotFoundException {
 
         Optional<User> userOptional = userController.getUserByUserName(userName);
-//        if(userOptional.isEmpty()){
-//            return ResponseEntity.badRequest().body("Error: User Name Invalid");
-//        }
+
 
         User user = userOptional.orElseThrow(() -> new UserNotFoundException("Error: User Name Invalid"));
 
         if(!user.getStringBlogMap().containsKey(oldName)){
             throw new BlogNotFoundException("Error: Blog title does not exist");
-//            return ResponseEntity.badRequest().body("Error: Blog title does not exist");
         }
 
         Blog blog = user.getStringBlogMap().get(oldName);

@@ -32,28 +32,6 @@ public class SeedDB {
 
             logger.info("logging: " + user.getStringBlogMap().keySet());
 
-//            Joke joke = jokeRepo.save(new Joke("e=mc2", Category.A, true));
-//            Joke joke1 = jokeRepo.save(new Joke("death", Category.A, true));
-//            Joke joke2 = jokeRepo.save(new Joke("getting a degree", Category.A, false));
-
-//            blog.getJokeCollection().addAll(Arrays.asList(joke,joke1));
-//            blog2.getJokeCollection().addAll(Arrays.asList(joke,joke2));
-//
-//            joke.getBlogCollection().addAll(Arrays.asList(blog,blog2));
-//            joke1.getBlogCollection().add(blog);
-//            joke2.getBlogCollection().add(blog2);
-
-//            user.getStringBlogMap().put(blog.getTitle(), blog);
-//            user.getStringBlogMap().put(blog2.getTitle(), blog2);
-//
-//            logger.info("logging: " + user.getStringBlogMap().keySet());
-//            blogRepo.save(blog);
-//            blogRepo.save(blog2);
-//            userRepo.save(user);
-//            userRepo.save(user2);
-//            jokeRepo.save(joke);
-//            jokeRepo.save(joke1);
-//            jokeRepo.save(joke2);
         };
     }
 }

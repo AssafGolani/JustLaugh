@@ -24,7 +24,6 @@ public class Joke {
     private Collection<Blog> blogCollection = new ArrayList<>(); // blogs which contains curtain joke
 
     public Joke(String joke, Category category) {
-//        this.author = author;
         this.category = category;
         this.joke = joke;
     }

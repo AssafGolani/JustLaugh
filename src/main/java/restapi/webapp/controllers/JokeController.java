@@ -100,10 +100,6 @@ public class JokeController {
     public ResponseEntity<?> getJokesByUserName(@RequestParam String userName) throws UserNotFoundException {
         Optional<User> userOptional = userController.getUserByUserName(userName);
 
-//        if (userOptional.isEmpty()) {
-//            return ResponseEntity.badRequest().body("Error: user name not found");
-//        }
-
         User user = userOptional.orElseThrow(() -> new UserNotFoundException("Error: User was not found"));
         List<JokeDTO> jokes = user.getStringBlogMap().values().stream()
                 .map(Blog::getJokeCollection)
@@ -140,18 +136,13 @@ public class JokeController {
         Joke joke = jokesService.parsedJoke(apiJoke);
         Optional<Blog> blogOptional = blogController.getBlog(blogId);
 
-//        if (blogOptional.isEmpty()) {
-//            return ResponseEntity.badRequest().body("Error: blog id is unavailable");
-//        }
         Optional<Joke> optionalJoke = jokeRepo.findByJoke(joke.getJoke());
 
         // if joke not exists at all. add to repo
         if (optionalJoke.isEmpty()) {
             Blog blog = blogOptional.orElseThrow(() -> new BlogNotFoundException("Error: Blog was not found"));
-            joke.getBlogCollection().add(blog);
-            blog.getJokeCollection().add(joke);
-            jokeRepo.save(joke);
-            return ResponseEntity.created(URI.create("https://localhost:8080/joke/" + joke.getId()))
+            addJokeToBlog(joke, blog);
+            return ResponseEntity.created(URI.create("http://localhost:8080/jokes/" + joke.getId()))
                     .body(jokeDTOFactory.toModel(new JokeDTO(joke)));
         }
         // if joke exists already. add her to desired blog.
@@ -159,14 +150,18 @@ public class JokeController {
             Joke joke1 = optionalJoke.get();
             Blog blog1 = blogOptional.orElseThrow(() -> new BlogNotFoundException("Error: Blog was not found"));
             if (!joke1.getBlogCollection().contains(blog1)) {
-                joke1.getBlogCollection().add(blog1);
-                blog1.getJokeCollection().add(joke1);
-                jokeRepo.save(joke1);
+                addJokeToBlog(joke1, blog1);
             }
 
-            return ResponseEntity.created(URI.create("https://localhost:8080/joke/" + joke1.getId()))
+            return ResponseEntity.created(URI.create("http://localhost:8080/jokes/" + joke1.getId()))
                     .body(jokeDTOFactory.toModel(new JokeDTO(joke1)));
         }
+    }
+
+    private void addJokeToBlog(Joke joke, Blog blog) {
+        joke.getBlogCollection().add(blog);
+        blog.getJokeCollection().add(joke);
+        jokeRepo.save(joke);
     }
 
 

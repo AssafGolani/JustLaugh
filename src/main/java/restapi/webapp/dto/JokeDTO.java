@@ -19,11 +19,9 @@ public class JokeDTO {
 
     public Long getId() {return this.joke.getId();}
 
-//    public String getAuthor() {return this.joke.getAuthor();}
-
     public String getCategory() {return this.joke.getCategory().toString();}
 
-    public String getJokeIs() {return this.joke.getJoke();} //TODO: doesn't come back with the rest of the DTO if it called "joke".
+    public String getJokeIs() {return this.joke.getJoke();}
 
     public List<String> getBlogs(){ return
             this.joke.getBlogCollection().stream()

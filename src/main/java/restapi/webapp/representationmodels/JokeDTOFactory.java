@@ -19,12 +19,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class JokeDTOFactory implements SimpleRepresentationModelAssembler<JokeDTO> {
     @Override
     public void addLinks(EntityModel<JokeDTO> resource) {
-        /*
-                resource.add(
-                linkTo(methodOn(JokeController.class).getJokeById(Objects.requireNonNull(resource.getContent()).getId()))
-                        .withSelfRel());
-         */
-        //TODO: why says it needs try-catch
         try {
             resource.add(
                     linkTo(methodOn(JokeController.class).getJokeById(Objects.requireNonNull(resource.getContent()).getId()))
@@ -32,9 +26,6 @@ public class JokeDTOFactory implements SimpleRepresentationModelAssembler<JokeDT
         } catch (JokeNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-//        resource.add(linkTo(methodOn(BlogController.class).blogsInfo(resource.getContent().getBlogs()))
-//                .withRel("Blogs contained information"));
     }
 
     @Override
