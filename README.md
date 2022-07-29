@@ -30,7 +30,6 @@
       <a href="#getting-started">Getting Started</a>
     </li>
     <li><a href="#contributors">Contributors</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
