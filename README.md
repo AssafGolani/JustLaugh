@@ -146,3 +146,27 @@ We thank the following people who contributed to this project:
 [linkedin-url]: https://linkedin.com/in/assaf-golani
 [gmail-shield]: https://img.shields.io/badge/1214assaf@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white
 [gmail-url]: mailto:1214assaf@gmail.com
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[reposize-shield]: https://img.shields.io/github/repo-size/AssafGolani/ServerSideSpring?style=for-the-badge
+
+[languagescount-shield]: https://img.shields.io/github/languages/count/AssafGolani/ServerSideSpring?style=for-the-badge
+
+[contributors-shield]: https://img.shields.io/github/contributors/AssafGolani/ServerSideSpring.svg?style=for-the-badge
+
+[contributors-url]: https://github.com/AssafGolani/ServerSideSpring/graphs/contributors
+
+[stars-shield]: https://img.shields.io/github/stars/AssafGolani/ServerSideSpring.svg?style=for-the-badge
+
+[stars-url]: https://github.com/RamMichaeli17/Community/stargazers
+
+[linkedin-shield]: https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white
+
+[linkedin-url]: https://linkedin.com/in/ram-michaeli
+
+[gmail-shield]: https://img.shields.io/badge/1214assaf@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white
+
+[gmail-url]: mailto:1214assaf@gmail.com
+
+[product-screenshot]: images/screenshot.png
