@@ -9,7 +9,7 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![Gmail][gmail-shield]][gmail-url]
 
-<h3 align="center">Final Project Developing Open Source Based Server-Side Applications: "User-Blog-Joke"</h3>
+<h3 align="center">Final Project Developing Open Source Based Server-Side Applications: "JustLaugh"</h3>
 
   <p align="center">
        A web application project that was developed using Spring Boot framework, and supplies various RESTful API services to users, using various libraries such as Jackson, Spring HATEOAS, Swagger UI, Data REST. 
