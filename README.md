@@ -140,8 +140,7 @@ We thank the following people who contributed to this project:
 [![Gmail][gmail-shield]][gmail-url]
 
 
-<!-- CONTACT -->
-## Contact
+
 [linkedin-url]: https://linkedin.com/in/assaf-golani-2a723a13a
 [gmail-shield]: https://img.shields.io/badge/1214assaf@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white
 [gmail-url]: mailto:1214assaf@gmail.com
