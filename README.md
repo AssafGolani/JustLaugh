@@ -36,7 +36,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 This project was developed fully in Java language, using Spring Boot framework. <br>
-In this project we implemented a system that manages users and blogs offering a wide variety of functionalities. The user is offered not only the basic CRUD functionality, but rather get data about users and blogs using complex queries and conditions.<br>
+In this project we implemented a system that let you create a user, blog and fetch jokes from api, if you like the joke you can save it in your blog (or blogs), the same joke can be saved in multiple blogs. The system manages users and blogs offering a wide variety of functionalities. The user is offered not only the basic CRUD functionality, but rather get data about users and blogs using complex queries and conditions.<br>
 
 RESTful representations were also implemented using HATEOAS library,
 Async programming was also used in this project by using CompletableFuture class,
