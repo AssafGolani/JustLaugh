@@ -76,7 +76,7 @@ Follow these simple steps:
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/AssafGolani/ServerSideSpring
+   git clone https://github.com/AssafGolani/JustLaugh.git
    ```
 2. Run the program
    ```sh
