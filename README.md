@@ -143,7 +143,7 @@ We thank the following people who contributed to this project:
 
 <!-- CONTACT -->
 ## Contact
-[linkedin-url]: https://linkedin.com/in/assaf-golani
+[linkedin-url]: https://linkedin.com/in/assaf-golani-2a723a13a
 [gmail-shield]: https://img.shields.io/badge/1214assaf@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white
 [gmail-url]: mailto:1214assaf@gmail.com
 
@@ -159,11 +159,11 @@ We thank the following people who contributed to this project:
 
 [stars-shield]: https://img.shields.io/github/stars/AssafGolani/ServerSideSpring.svg?style=for-the-badge
 
-[stars-url]: https://github.com/RamMichaeli17/Community/stargazers
+[stars-url]: https://github.com/AssafGolani/ServerSideSpring/stargazers
 
 [linkedin-shield]: https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white
 
-[linkedin-url]: https://linkedin.com/in/ram-michaeli
+[linkedin-url]: https://linkedin.com/in/assaf-golani-2a723a13a
 
 [gmail-shield]: https://img.shields.io/badge/1214assaf@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white
 
