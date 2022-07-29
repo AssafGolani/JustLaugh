@@ -136,7 +136,6 @@ We thank the following people who contributed to this project:
 [![GitHub language count][languagescount-shield]](#)
 [![Contributors][contributors-shield]][contributors-url]
 [![Stargazers][stars-shield]][stars-url]
-[![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![Gmail][gmail-shield]][gmail-url]
 
