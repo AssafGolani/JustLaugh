@@ -85,9 +85,9 @@ Follow these simple steps:
    ```
    ![image](https://user-images.githubusercontent.com/62435713/180663523-ff46d032-416e-48c3-b20e-943338671ea9.png) 
 3. Import requests to Postman using this link:<br>
-[https://www.getpostman.com/collections/3ae56741681d12e2a393](https://www.getpostman.com/collections/573b5aa3403af19411e4)
-https://www.getpostman.com/collections/88c894d72a4e5f55caaf
-https://www.getpostman.com/collections/05f42928f2a4fd2d79cb
+[https://www.getpostman.com/collections/3ae56741681d12e2a393](https://www.getpostman.com/collections/573b5aa3403af19411e4) <br>
+https://www.getpostman.com/collections/88c894d72a4e5f55caaf <br>
+https://www.getpostman.com/collections/05f42928f2a4fd2d79cb <br>
 
 4. You may enter to H2 DB UI using this link:<br>
 http://localhost:8080/h2
